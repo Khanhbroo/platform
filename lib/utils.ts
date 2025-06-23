@@ -12,3 +12,9 @@ export function formatDate(date: string) {
     year: "numeric",
   });
 }
+
+export function formatQuantity(number: number, text: string): string {
+  return number > 1
+    ? `${text}s: ${number.toFixed(0)}`
+    : `${text}: ${number.toFixed(0)}`;
+}

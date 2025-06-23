@@ -2,7 +2,6 @@ import SearchForm from "@/components/search-form";
 import StartupCard, { StartupTypeCard } from "@/components/startup-card";
 import { STARTUPS_QUERY } from "@/sanity/lib/queries";
 import { sanityFetch, SanityLive } from "@/sanity/lib/live";
-import "easymde/dist/easymde.min.css";
 
 export default async function Home({
   searchParams,
