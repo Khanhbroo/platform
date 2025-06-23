@@ -5,23 +5,26 @@ import { formatDate } from "@/lib/utils";
 import { EyeIcon } from "lucide-react";
 import Image from "next/image";
 import { Button } from "./ui/button";
+import { Author, Startup } from "@/sanity/types";
+
+export type StartupTypeCard = Omit<Startup, "author"> & { author?: Author };
 
 const StartupCard = ({ post }: { post: StartupTypeCard }) => {
   const {
-    _createAt,
+    _createdAt,
     views,
-    author: { _id: authorId, name },
+    author,
     title,
     category,
     _id: postId,
-    image,
+    image: postImage,
     description,
   } = post;
 
   return (
     <li className="startup-card group">
       <div className="flex-between">
-        <p className="startup_card_date">{formatDate(_createAt)}</p>
+        <p className="startup_card_date">{formatDate(_createdAt)}</p>
         <div className="flex gap-1.5">
           <EyeIcon className="size-6 text-primary" />
           <span className="text-16-medium">{views}</span>
@@ -31,11 +34,11 @@ const StartupCard = ({ post }: { post: StartupTypeCard }) => {
       <div className="flex-between mt-5 gap-5">
         <div className="flex-1">
           <Link
-            href={`/user/${authorId}`}
+            href={`/user/${author?._id}`}
             className="hover:underline"
             target="_blank"
           >
-            <p className="text-16-medium line-clamp-1">{name}</p>
+            <p className="text-16-medium line-clamp-1">{author?.name}</p>
           </Link>
 
           <Link
@@ -48,12 +51,12 @@ const StartupCard = ({ post }: { post: StartupTypeCard }) => {
         </div>
 
         <Link
-          href={`/user/${authorId}`}
+          href={`/user/${author?._id}`}
           className="hover:underline"
           target="_blank"
         >
           <Image
-            src="https://placehold.co/48x48"
+            src={author?.image}
             alt="user_image"
             width={48}
             height={48}
@@ -65,12 +68,12 @@ const StartupCard = ({ post }: { post: StartupTypeCard }) => {
       <Link href={`/startup/${postId}`} target="_blank">
         <p className="startup-card_desc !font-medium">{description}</p>
 
-        <img src={image} alt="post-holder" className="startup-card_img" />
+        <img src={postImage} alt="post-holder" className="startup-card_img" />
       </Link>
 
       <div className="flex-between gap-3 mt-5">
         <Link
-          href={`/?query=${category.toLowerCase()}`}
+          href={`/?query=${category?.toLowerCase()}`}
           className="hover:underline"
           target="_blank"
         >
