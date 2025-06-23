@@ -56,7 +56,7 @@ const StartupCard = ({ post }: { post: StartupTypeCard }) => {
           target="_blank"
         >
           <Image
-            src={author?.image}
+            src={author?.image || ""}
             alt="user_image"
             width={48}
             height={48}
