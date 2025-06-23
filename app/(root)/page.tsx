@@ -2,6 +2,7 @@ import SearchForm from "@/components/search-form";
 import StartupCard, { StartupTypeCard } from "@/components/startup-card";
 import { STARTUPS_QUERY } from "@/sanity/lib/queries";
 import { sanityFetch, SanityLive } from "@/sanity/lib/live";
+import "easymde/dist/easymde.min.css";
 
 export default async function Home({
   searchParams,
@@ -9,8 +10,8 @@ export default async function Home({
   searchParams: Promise<{ query?: string }>;
 }) {
   const query = (await searchParams).query;
-
-  const { data: posts } = await sanityFetch({ query: STARTUPS_QUERY });
+  const params = { search: query || null };
+  const { data: posts } = await sanityFetch({ query: STARTUPS_QUERY, params });
 
   return (
     <>
