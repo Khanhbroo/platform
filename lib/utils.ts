@@ -14,7 +14,15 @@ export function formatDate(date: string) {
 }
 
 export function formatQuantity(number: number, text: string): string {
+  if (!number) {
+    number = 0;
+  }
+
   return number > 1
     ? `${text}s: ${number.toFixed(0)}`
     : `${text}: ${number.toFixed(0)}`;
+}
+
+export function parseServerActionResponse<T>(response: T) {
+  return JSON.parse(JSON.stringify(response));
 }

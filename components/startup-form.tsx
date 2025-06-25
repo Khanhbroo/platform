@@ -10,6 +10,7 @@ import { formSchema } from "@/lib/validation";
 import { z } from "zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { createPitch } from "@/lib/actions";
 
 const StartupForm = () => {
   const [formData, setFormData] = useState<Record<string, string>>({});
@@ -25,20 +26,22 @@ const StartupForm = () => {
       link: formData.get("link") as string,
       pitch,
     };
+
+    // Write form data to sanity
     try {
       await formSchema.parseAsync(formValues);
       console.log(formValues);
 
-      // const result = await createIdea(prevState, formData, pitch)
-      // console.log(result);
+      const result = await createPitch(prevState, formData, pitch);
+      console.log(result);
 
-      //   if(result.status === "SUCCESS") {
-      //     toast.success("Your startup pitch has been created successfully")
-      //   }
+      if (result.status === "SUCCESS") {
+        toast.success("Your startup pitch has been created successfully");
+      }
 
-      //   router.push(`/startup/${result.id}`)
+      router.push(`/startup/${result._id}`);
 
-      //   return result;
+      return result;
     } catch (error) {
       setFormData(formValues as unknown as Record<string, string>);
       if (error instanceof z.ZodError) {
