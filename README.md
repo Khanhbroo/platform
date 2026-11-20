@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Startup Pitch Platform
 
-## Getting Started
+A full-stack startup showcase and pitch directory built with **Next.js 15**, **Sanity CMS v3**, **NextAuth v5** (GitHub OAuth), and **Sentry** error monitoring.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Tech Stack
+
+| Layer | Technologies |
+| :--- | :--- |
+| **Framework** | Next.js 15 (App Router), React 19, TypeScript |
+| **CMS & Data** | Sanity v3 (`next-sanity`, `sanity-plugin-markdown`, Sanity Typegen) |
+| **Authentication** | NextAuth v5 (GitHub OAuth provider synced with Sanity `author` records) |
+| **Styling & UI** | Tailwind CSS, Radix UI primitives, `@uiw/react-md-editor`, Sonner |
+| **Observability** | Sentry (`@sentry/nextjs` client, server, and edge instrumentation) |
+
+---
+
+## Project Structure
+
+```text
+platform/
+├── app/
+│   ├── (root)/            # Main startup directory layout & pages
+│   ├── global-error.tsx   # Sentry global error boundary
+│   └── layout.tsx         # Root typography & layout
+├── components/            # Navbar, search, startup cards & pitch submission form
+├── sanity/
+│   ├── lib/               # Sanity client, write-client, GROQ queries & live preview
+│   ├── schemaTypes/       # Author & Startup document schemas
+│   └── types.ts           # Generated Sanity TypeScript types
+├── auth.ts                # NextAuth GitHub OAuth configuration
+├── instrumentation.ts     # Sentry server/edge instrumentation hook
+└── next.config.ts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Configure `.env.local`:
 
-## Learn More
+```env
+NEXT_PUBLIC_SANITY_PROJECT_ID=your_sanity_project_id
+NEXT_PUBLIC_SANITY_DATASET=production
+NEXT_PUBLIC_SANITY_API_VERSION=2025-06-22
+SANITY_WRITE_TOKEN=your_sanity_write_token
+AUTH_SECRET=your_nextauth_secret
+AUTH_GITHUB_ID=your_github_oauth_client_id
+AUTH_GITHUB_SECRET=your_github_oauth_client_secret
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Local Development
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm install
+npm run dev
+```
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> `predev` and `prebuild` automatically extract Sanity schemas and regenerate `sanity/types.ts` via `npm run typegen`.
